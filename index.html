@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Vragen Bot</title>
+    <title>Geostick HR Bot</title>
     <style>
         * {
             margin: 0;
@@ -415,14 +415,14 @@
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-logo">GEOSTICK</div>
         <div class="loading-spinner"></div>
-        <div class="loading-text" id="loadingText">HR Vragen Bot wordt geladen...</div>
+        <div class="loading-text" id="loadingText">Geostick HR Bot wordt geladen...</div>
     </div>
 
     <div class="chat-container">
         <div class="chat-header">
             <div class="chat-header-top">
                 <div>
-                    <h1 id="headerTitle">HR Vragen Bot</h1>
+                    <h1 id="headerTitle">Geostick HR Bot</h1>
                     <p id="headerSubtitle">Stel al je vragen die je normaal aan de HR zou vragen</p>
                 </div>
                 <div class="language-selector">
@@ -478,7 +478,7 @@
         <div class="chat-messages" id="chatMessages">
             <div class="message bot">
                 <div class="message-content" id="welcomeMessage">
-                    Hallo! Ik ben je HR Vragen Bot. Stel gerust je vraag!
+                    Hallo! Ik ben de Geostick HR Bot. Stel gerust je vraag!
                 </div>
             </div>
         </div>
@@ -513,123 +513,123 @@
         // Translations
         const translations = {
             nl: {
-                title: 'HR Vragen Bot',
+                title: 'Geostick HR Bot',
                 subtitle: 'Stel al je vragen die je normaal aan de HR zou vragen',
                 placeholder: 'Typ je vraag hier...',
                 sendButton: 'Verstuur',
-                welcome: 'Hallo! Ik ben je HR Vragen Bot. Stel gerust je vraag!',
+                welcome: 'Hallo! Ik ben de Geostick HR Bot. Stel gerust je vraag!',
                 error: 'Er is een fout opgetreden. Probeer het opnieuw.',
                 noResponse: 'Sorry, ik kon geen antwoord genereren.',
                 errorOccurred: 'Sorry, er ging iets mis. Probeer het opnieuw.',
-                loading: 'HR Vragen Bot wordt geladen...',
+                loading: 'Geostick HR Bot wordt geladen...',
                 flag: '🇳🇱'
             },
             en: {
-                title: 'HR Questions Bot',
+                title: 'Geostick HR Bot',
                 subtitle: 'Ask all the questions you would normally ask HR',
                 placeholder: 'Type your question here...',
                 sendButton: 'Send',
-                welcome: 'Hello! I am your HR Questions Bot. Feel free to ask your question!',
+                welcome: 'Hello! I am the Geostick HR Bot. Feel free to ask your question!',
                 error: 'An error occurred. Please try again.',
                 noResponse: 'Sorry, I could not generate a response.',
                 errorOccurred: 'Sorry, something went wrong. Please try again.',
-                loading: 'HR Questions Bot is loading...',
+                loading: 'Geostick HR Bot is loading...',
                 flag: '🇬🇧'
             },
             tr: {
-                title: 'İK Soruları Botu',
+                title: 'Geostick İK Botu',
                 subtitle: 'Normalde İK\'ya soracağınız tüm soruları sorun',
                 placeholder: 'Sorunuzu buraya yazın...',
                 sendButton: 'Gönder',
-                welcome: 'Merhaba! Ben İK Soruları Botunuzum. Sorunuzu sormaktan çekinmeyin!',
+                welcome: 'Merhaba! Ben Geostick İK Botuyum. Sorunuzu sormaktan çekinmeyin!',
                 error: 'Bir hata oluştu. Lütfen tekrar deneyin.',
                 noResponse: 'Üzgünüm, yanıt oluşturamadım.',
                 errorOccurred: 'Üzgünüm, bir şeyler ters gitti. Lütfen tekrar deneyin.',
-                loading: 'İK Soruları Botu yükleniyor...',
+                loading: 'Geostick İK Botu yükleniyor...',
                 flag: '🇹🇷'
             },
             pl: {
-                title: 'Bot Pytań HR',
+                title: 'Geostick Bot HR',
                 subtitle: 'Zadaj wszystkie pytania, które normalnie zadałbyś HR',
                 placeholder: 'Wpisz tutaj swoje pytanie...',
                 sendButton: 'Wyślij',
-                welcome: 'Cześć! Jestem twoim Botem Pytań HR. Zadaj swoje pytanie!',
+                welcome: 'Cześć! Jestem Geostick Bot HR. Zadaj swoje pytanie!',
                 error: 'Wystąpił błąd. Spróbuj ponownie.',
                 noResponse: 'Przepraszam, nie mogłem wygenerować odpowiedzi.',
                 errorOccurred: 'Przepraszam, coś poszło nie tak. Spróbuj ponownie.',
-                loading: 'Bot Pytań HR ładuje się...',
+                loading: 'Geostick Bot HR ładuje się...',
                 flag: '🇵🇱'
             },
             ar: {
-                title: 'بوت أسئلة الموارد البشرية',
+                title: 'Geostick بوت الموارد البشرية',
                 subtitle: 'اطرح جميع الأسئلة التي تطرحها عادةً على الموارد البشرية',
                 placeholder: 'اكتب سؤالك هنا...',
                 sendButton: 'إرسال',
-                welcome: 'مرحبا! أنا بوت أسئلة الموارد البشرية. لا تتردد في طرح سؤالك!',
+                welcome: 'مرحبا! أنا Geostick بوت الموارد البشرية. لا تتردد في طرح سؤالك!',
                 error: 'حدث خطأ. يرجى المحاولة مرة أخرى.',
                 noResponse: 'عذرا، لم أتمكن من إنشاء رد.',
                 errorOccurred: 'عذرا، حدث خطأ ما. يرجى المحاولة مرة أخرى.',
-                loading: 'يتم تحميل بوت أسئلة الموارد البشرية...',
+                loading: 'يتم تحميل Geostick بوت الموارد البشرية...',
                 flag: '🇸🇦'
             },
             de: {
-                title: 'HR-Fragen Bot',
+                title: 'Geostick HR Bot',
                 subtitle: 'Stellen Sie alle Fragen, die Sie normalerweise der Personalabteilung stellen würden',
                 placeholder: 'Geben Sie hier Ihre Frage ein...',
                 sendButton: 'Senden',
-                welcome: 'Hallo! Ich bin Ihr HR-Fragen Bot. Stellen Sie gerne Ihre Frage!',
+                welcome: 'Hallo! Ich bin der Geostick HR Bot. Stellen Sie gerne Ihre Frage!',
                 error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
                 noResponse: 'Entschuldigung, ich konnte keine Antwort generieren.',
                 errorOccurred: 'Entschuldigung, etwas ist schief gelaufen. Bitte versuchen Sie es erneut.',
-                loading: 'HR-Fragen Bot wird geladen...',
+                loading: 'Geostick HR Bot wird geladen...',
                 flag: '🇩🇪'
             },
             es: {
-                title: 'Bot de Preguntas RRHH',
+                title: 'Geostick Bot RRHH',
                 subtitle: 'Haz todas las preguntas que normalmente harías a RRHH',
                 placeholder: 'Escribe tu pregunta aquí...',
                 sendButton: 'Enviar',
-                welcome: '¡Hola! Soy tu Bot de Preguntas RRHH. ¡No dudes en hacer tu pregunta!',
+                welcome: '¡Hola! Soy el Geostick Bot RRHH. ¡No dudes en hacer tu pregunta!',
                 error: 'Se produjo un error. Por favor, inténtalo de nuevo.',
                 noResponse: 'Lo siento, no pude generar una respuesta.',
                 errorOccurred: 'Lo siento, algo salió mal. Por favor, inténtalo de nuevo.',
-                loading: 'Bot de Preguntas RRHH está cargando...',
+                loading: 'Geostick Bot RRHH está cargando...',
                 flag: '🇪🇸'
             },
             fr: {
-                title: 'Bot de Questions RH',
+                title: 'Geostick Bot RH',
                 subtitle: 'Posez toutes les questions que vous poseriez normalement aux RH',
                 placeholder: 'Tapez votre question ici...',
                 sendButton: 'Envoyer',
-                welcome: 'Bonjour! Je suis votre Bot de Questions RH. N\'hésitez pas à poser votre question!',
+                welcome: 'Bonjour! Je suis le Geostick Bot RH. N\'hésitez pas à poser votre question!',
                 error: 'Une erreur s\'est produite. Veuillez réessayer.',
                 noResponse: 'Désolé, je n\'ai pas pu générer de réponse.',
                 errorOccurred: 'Désolé, quelque chose s\'est mal passé. Veuillez réessayer.',
-                loading: 'Bot de Questions RH est en cours de chargement...',
+                loading: 'Geostick Bot RH est en cours de chargement...',
                 flag: '🇫🇷'
             },
             pap: {
-                title: 'Bot di Pregunta HR',
+                title: 'Geostick Bot HR',
                 subtitle: 'Hasi tur pregunta ku bo normalmente ta hasi na HR',
                 placeholder: 'Tipa bo pregunta aki...',
                 sendButton: 'Manda',
-                welcome: 'Bon bini! Mi ta bo Bot di Pregunta HR. Hasi bo pregunta!',
+                welcome: 'Bon bini! Mi ta Geostick Bot HR. Hasi bo pregunta!',
                 error: 'A sosodé un eror. Por fabor intenta atrobe.',
                 noResponse: 'Dispensa, mi no por a genera un respuesta.',
                 errorOccurred: 'Dispensa, algu a bai robes. Por fabor intenta atrobe.',
-                loading: 'Bot di Pregunta HR ta kargando...',
+                loading: 'Geostick Bot HR ta kargando...',
                 flag: '🇨🇼'
             },
             ber: {
-                title: 'Abot n yisteqsiyen HR',
+                title: 'Geostick Abot HR',
                 subtitle: 'Saqsa akk isteqsiyen i tessutureḍ s ulayam i HR',
                 placeholder: 'Aru asteqsi-nnek dagi...',
                 sendButton: 'Azen',
-                welcome: 'Azul! Nekk d Abot-nnek n yisteqsiyen HR. Saqsa asteqsi-nnek!',
+                welcome: 'Azul! Nekk d Geostick Abot HR. Saqsa asteqsi-nnek!',
                 error: 'Yella ugur. Ɛreḍ tikelt-nniḍen.',
                 noResponse: 'Suref-iyi, ur zmireɣ ara ad d-snulfuɣ tiririt.',
                 errorOccurred: 'Suref-iyi, yella wayen ur neddi ara akken ilaq. Ɛreḍ tikelt-nniḍen.',
-                loading: 'Abot n yisteqsiyen HR ittalas...',
+                loading: 'Geostick Abot HR ittalas...',
                 flag: '🏴'
             }
         };
