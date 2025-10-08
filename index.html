@@ -246,8 +246,21 @@
 
         .message {
             display: flex;
+            flex-direction: column;
             margin-bottom: 15px;
             animation: slideIn 0.3s ease;
+        }
+
+        .message-sender {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            padding: 0 4px;
+            color: #666;
+        }
+
+        .message.bot .message-sender {
+            color: #E32219;
         }
 
         @keyframes slideIn {
@@ -479,6 +492,7 @@
 
         <div class="chat-messages" id="chatMessages">
             <div class="message bot">
+                <div class="message-sender">GeoBot</div>
                 <div class="message-content" id="welcomeMessage">
                     Hallo! Ik ben de Geostick HR Bot. Stel gerust je vraag!
                 </div>
@@ -690,6 +704,14 @@
         function addMessage(content, isUser = false) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+
+            // Add sender name for bot messages
+            if (!isUser) {
+                const senderDiv = document.createElement('div');
+                senderDiv.className = 'message-sender';
+                senderDiv.textContent = 'GeoBot';
+                messageDiv.appendChild(senderDiv);
+            }
 
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
