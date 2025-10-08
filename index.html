@@ -246,20 +246,14 @@
 
         .message {
             display: flex;
-            flex-direction: column;
             margin-bottom: 15px;
             animation: slideIn 0.3s ease;
         }
 
         .message-sender {
             font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            padding: 0 4px;
-            color: #666;
-        }
-
-        .message.bot .message-sender {
+            font-weight: 700;
+            margin-bottom: 6px;
             color: #E32219;
         }
 
@@ -285,6 +279,12 @@
             word-wrap: break-word;
             white-space: pre-line;
             line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-text {
+            display: block;
         }
 
         .message.bot .message-content {
@@ -492,9 +492,9 @@
 
         <div class="chat-messages" id="chatMessages">
             <div class="message bot">
-                <div class="message-sender">GeoBot</div>
-                <div class="message-content" id="welcomeMessage">
-                    Hallo! Ik ben de Geostick HR Bot. Stel gerust je vraag!
+                <div class="message-content">
+                    <div class="message-sender">GeoBot</div>
+                    <div class="message-text" id="welcomeMessage">Hallo! Ik ben de Geostick HR Bot. Stel gerust je vraag!</div>
                 </div>
             </div>
         </div>
@@ -705,23 +705,26 @@
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
 
-            // Add sender name for bot messages
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+
+            // Add sender name for bot messages (inside the bubble)
             if (!isUser) {
                 const senderDiv = document.createElement('div');
                 senderDiv.className = 'message-sender';
                 senderDiv.textContent = 'GeoBot';
-                messageDiv.appendChild(senderDiv);
-            }
+                contentDiv.appendChild(senderDiv);
 
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
-
-            // Convert markdown-style bold (**text**) to HTML
-            if (!isUser) {
+                // Convert markdown-style bold (**text**) to HTML
                 content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            }
 
-            contentDiv.innerHTML = content;
+                const textDiv = document.createElement('div');
+                textDiv.className = 'message-text';
+                textDiv.innerHTML = content;
+                contentDiv.appendChild(textDiv);
+            } else {
+                contentDiv.innerHTML = content;
+            }
 
             messageDiv.appendChild(contentDiv);
             chatMessages.appendChild(messageDiv);
