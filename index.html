@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QA Bot Demo</title>
+    <title>HR Vragen Bot</title>
     <style>
         * {
             margin: 0;
@@ -19,6 +19,23 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><text x="50%%" y="50%%" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="120" font-weight="bold" fill="rgba(255,255,255,0.08)">GEO</text></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .chat-container {
@@ -32,6 +49,74 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ECE31E 0%, #E32219 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-logo {
+            font-size: 64px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+            letter-spacing: 4px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            position: relative;
+        }
+
+        .loading-spinner::before,
+        .loading-spinner::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: white;
+            width: 100%;
+            height: 100%;
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+
+        .loading-spinner::after {
+            border-top-color: rgba(255, 255, 255, 0.4);
+            animation-delay: -0.4s;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 30px;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            opacity: 0.9;
         }
 
         .chat-header {
@@ -304,17 +389,23 @@
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">GEOSTICK</div>
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">HR Vragen Bot wordt geladen...</div>
+    </div>
+
     <div class="chat-container">
         <div class="chat-header">
             <div class="chat-header-top">
                 <div>
-                    <h1 id="headerTitle">QA Bot Demo</h1>
-                    <p id="headerSubtitle">Stel je vraag en krijg direct antwoord</p>
+                    <h1 id="headerTitle">HR Vragen Bot</h1>
+                    <p id="headerSubtitle">Stel al je vragen die je normaal aan de HR zou vragen</p>
                 </div>
                 <div class="language-selector">
                     <button class="language-button" id="languageButton">
-                        <span class="flag" id="currentFlag">🇳🇱</span>
-                        <span id="currentLanguage">NL</span>
+                        <span id="currentFlag">🇳🇱</span>
                     </button>
                     <div class="language-dropdown" id="languageDropdown">
                         <div class="language-option selected" data-lang="nl">
@@ -365,7 +456,7 @@
         <div class="chat-messages" id="chatMessages">
             <div class="message bot">
                 <div class="message-content" id="welcomeMessage">
-                    Hallo! Ik ben je QA bot. Stel gerust je vraag!
+                    Hallo! Ik ben je HR Vragen Bot. Stel gerust je vraag!
                 </div>
             </div>
         </div>
@@ -400,123 +491,123 @@
         // Translations
         const translations = {
             nl: {
-                title: 'QA Bot Demo',
-                subtitle: 'Stel je vraag en krijg direct antwoord',
+                title: 'HR Vragen Bot',
+                subtitle: 'Stel al je vragen die je normaal aan de HR zou vragen',
                 placeholder: 'Typ je vraag hier...',
                 sendButton: 'Verstuur',
-                welcome: 'Hallo! Ik ben je QA bot. Stel gerust je vraag!',
+                welcome: 'Hallo! Ik ben je HR Vragen Bot. Stel gerust je vraag!',
                 error: 'Er is een fout opgetreden. Probeer het opnieuw.',
                 noResponse: 'Sorry, ik kon geen antwoord genereren.',
                 errorOccurred: 'Sorry, er ging iets mis. Probeer het opnieuw.',
-                langCode: 'NL',
+                loading: 'HR Vragen Bot wordt geladen...',
                 flag: '🇳🇱'
             },
             en: {
-                title: 'QA Bot Demo',
-                subtitle: 'Ask your question and get an instant answer',
+                title: 'HR Questions Bot',
+                subtitle: 'Ask all the questions you would normally ask HR',
                 placeholder: 'Type your question here...',
                 sendButton: 'Send',
-                welcome: 'Hello! I am your QA bot. Feel free to ask your question!',
+                welcome: 'Hello! I am your HR Questions Bot. Feel free to ask your question!',
                 error: 'An error occurred. Please try again.',
                 noResponse: 'Sorry, I could not generate a response.',
                 errorOccurred: 'Sorry, something went wrong. Please try again.',
-                langCode: 'EN',
+                loading: 'HR Questions Bot is loading...',
                 flag: '🇬🇧'
             },
             tr: {
-                title: 'QA Bot Demo',
-                subtitle: 'Sorunuzu sorun ve anında cevap alın',
+                title: 'İK Soruları Botu',
+                subtitle: 'Normalde İK\'ya soracağınız tüm soruları sorun',
                 placeholder: 'Sorunuzu buraya yazın...',
                 sendButton: 'Gönder',
-                welcome: 'Merhaba! Ben QA botunuzum. Sorunuzu sormaktan çekinmeyin!',
+                welcome: 'Merhaba! Ben İK Soruları Botunuzum. Sorunuzu sormaktan çekinmeyin!',
                 error: 'Bir hata oluştu. Lütfen tekrar deneyin.',
                 noResponse: 'Üzgünüm, yanıt oluşturamadım.',
                 errorOccurred: 'Üzgünüm, bir şeyler ters gitti. Lütfen tekrar deneyin.',
-                langCode: 'TR',
+                loading: 'İK Soruları Botu yükleniyor...',
                 flag: '🇹🇷'
             },
             pl: {
-                title: 'QA Bot Demo',
-                subtitle: 'Zadaj pytanie i otrzymaj natychmiastową odpowiedź',
+                title: 'Bot Pytań HR',
+                subtitle: 'Zadaj wszystkie pytania, które normalnie zadałbyś HR',
                 placeholder: 'Wpisz tutaj swoje pytanie...',
                 sendButton: 'Wyślij',
-                welcome: 'Cześć! Jestem twoim botem QA. Zadaj swoje pytanie!',
+                welcome: 'Cześć! Jestem twoim Botem Pytań HR. Zadaj swoje pytanie!',
                 error: 'Wystąpił błąd. Spróbuj ponownie.',
                 noResponse: 'Przepraszam, nie mogłem wygenerować odpowiedzi.',
                 errorOccurred: 'Przepraszam, coś poszło nie tak. Spróbuj ponownie.',
-                langCode: 'PL',
+                loading: 'Bot Pytań HR ładuje się...',
                 flag: '🇵🇱'
             },
             ar: {
-                title: 'QA Bot Demo',
-                subtitle: 'اطرح سؤالك واحصل على إجابة فورية',
+                title: 'بوت أسئلة الموارد البشرية',
+                subtitle: 'اطرح جميع الأسئلة التي تطرحها عادةً على الموارد البشرية',
                 placeholder: 'اكتب سؤالك هنا...',
                 sendButton: 'إرسال',
-                welcome: 'مرحبا! أنا بوت الأسئلة والأجوبة. لا تتردد في طرح سؤالك!',
+                welcome: 'مرحبا! أنا بوت أسئلة الموارد البشرية. لا تتردد في طرح سؤالك!',
                 error: 'حدث خطأ. يرجى المحاولة مرة أخرى.',
                 noResponse: 'عذرا، لم أتمكن من إنشاء رد.',
                 errorOccurred: 'عذرا، حدث خطأ ما. يرجى المحاولة مرة أخرى.',
-                langCode: 'AR',
+                loading: 'يتم تحميل بوت أسئلة الموارد البشرية...',
                 flag: '🇸🇦'
             },
             de: {
-                title: 'QA Bot Demo',
-                subtitle: 'Stellen Sie Ihre Frage und erhalten Sie sofort eine Antwort',
+                title: 'HR-Fragen Bot',
+                subtitle: 'Stellen Sie alle Fragen, die Sie normalerweise der Personalabteilung stellen würden',
                 placeholder: 'Geben Sie hier Ihre Frage ein...',
                 sendButton: 'Senden',
-                welcome: 'Hallo! Ich bin Ihr QA-Bot. Stellen Sie gerne Ihre Frage!',
+                welcome: 'Hallo! Ich bin Ihr HR-Fragen Bot. Stellen Sie gerne Ihre Frage!',
                 error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
                 noResponse: 'Entschuldigung, ich konnte keine Antwort generieren.',
                 errorOccurred: 'Entschuldigung, etwas ist schief gelaufen. Bitte versuchen Sie es erneut.',
-                langCode: 'DE',
+                loading: 'HR-Fragen Bot wird geladen...',
                 flag: '🇩🇪'
             },
             es: {
-                title: 'QA Bot Demo',
-                subtitle: 'Haz tu pregunta y obtén una respuesta instantánea',
+                title: 'Bot de Preguntas RRHH',
+                subtitle: 'Haz todas las preguntas que normalmente harías a RRHH',
                 placeholder: 'Escribe tu pregunta aquí...',
                 sendButton: 'Enviar',
-                welcome: '¡Hola! Soy tu bot de preguntas y respuestas. ¡No dudes en hacer tu pregunta!',
+                welcome: '¡Hola! Soy tu Bot de Preguntas RRHH. ¡No dudes en hacer tu pregunta!',
                 error: 'Se produjo un error. Por favor, inténtalo de nuevo.',
                 noResponse: 'Lo siento, no pude generar una respuesta.',
                 errorOccurred: 'Lo siento, algo salió mal. Por favor, inténtalo de nuevo.',
-                langCode: 'ES',
+                loading: 'Bot de Preguntas RRHH está cargando...',
                 flag: '🇪🇸'
             },
             fr: {
-                title: 'QA Bot Demo',
-                subtitle: 'Posez votre question et obtenez une réponse instantanée',
+                title: 'Bot de Questions RH',
+                subtitle: 'Posez toutes les questions que vous poseriez normalement aux RH',
                 placeholder: 'Tapez votre question ici...',
                 sendButton: 'Envoyer',
-                welcome: 'Bonjour! Je suis votre bot QA. N\'hésitez pas à poser votre question!',
+                welcome: 'Bonjour! Je suis votre Bot de Questions RH. N\'hésitez pas à poser votre question!',
                 error: 'Une erreur s\'est produite. Veuillez réessayer.',
                 noResponse: 'Désolé, je n\'ai pas pu générer de réponse.',
                 errorOccurred: 'Désolé, quelque chose s\'est mal passé. Veuillez réessayer.',
-                langCode: 'FR',
+                loading: 'Bot de Questions RH est en cours de chargement...',
                 flag: '🇫🇷'
             },
             pap: {
-                title: 'QA Bot Demo',
-                subtitle: 'Hasi bo pregunta i haña respuesta direkto',
+                title: 'Bot di Pregunta HR',
+                subtitle: 'Hasi tur pregunta ku bo normalmente ta hasi na HR',
                 placeholder: 'Tipa bo pregunta aki...',
                 sendButton: 'Manda',
-                welcome: 'Bon bini! Mi ta bo bot di pregunta i respuesta. Hasi bo pregunta!',
+                welcome: 'Bon bini! Mi ta bo Bot di Pregunta HR. Hasi bo pregunta!',
                 error: 'A sosodé un eror. Por fabor intenta atrobe.',
                 noResponse: 'Dispensa, mi no por a genera un respuesta.',
                 errorOccurred: 'Dispensa, algu a bai robes. Por fabor intenta atrobe.',
-                langCode: 'PAP',
+                loading: 'Bot di Pregunta HR ta kargando...',
                 flag: '🇨🇼'
             },
             ber: {
-                title: 'QA Bot Demo',
-                subtitle: 'Saqsa asteqsi-nnek tessawed-d tiririt s tiririt',
+                title: 'Abot n yisteqsiyen HR',
+                subtitle: 'Saqsa akk isteqsiyen i tessutureḍ s ulayam i HR',
                 placeholder: 'Aru asteqsi-nnek dagi...',
                 sendButton: 'Azen',
-                welcome: 'Azul! Nekk d abot-nnek n yisteqsiyen. Saqsa asteqsi-nnek!',
+                welcome: 'Azul! Nekk d Abot-nnek n yisteqsiyen HR. Saqsa asteqsi-nnek!',
                 error: 'Yella ugur. Ɛreḍ tikelt-nniḍen.',
                 noResponse: 'Suref-iyi, ur zmireɣ ara ad d-snulfuɣ tiririt.',
                 errorOccurred: 'Suref-iyi, yella wayen ur neddi ara akken ilaq. Ɛreḍ tikelt-nniḍen.',
-                langCode: 'BER',
+                loading: 'Abot n yisteqsiyen HR ittalas...',
                 flag: '🏴'
             }
         };
@@ -559,12 +650,18 @@
             document.getElementById('messageInput').placeholder = t.placeholder;
             document.getElementById('sendButton').textContent = t.sendButton;
             document.getElementById('welcomeMessage').textContent = t.welcome;
-            document.getElementById('currentLanguage').textContent = t.langCode;
             document.getElementById('currentFlag').textContent = t.flag;
 
             // Update HTML lang attribute
             document.documentElement.lang = lang;
         }
+
+        // Loading screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 1500);
+        });
 
         function addMessage(content, isUser = false) {
             const messageDiv = document.createElement('div');
