@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ECE31E 0%, #E32219 100%);
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -35,11 +35,17 @@
         }
 
         .chat-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #E32219;
             color: white;
-            padding: 25px;
-            text-align: center;
+            padding: 20px 25px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
         .chat-header h1 {
@@ -50,7 +56,76 @@
         .chat-header p {
             font-size: 14px;
             opacity: 0.9;
-            margin-top: 5px;
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .language-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .language-dropdown {
+            display: none;
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            min-width: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .language-dropdown.active {
+            display: block;
+        }
+
+        .language-option {
+            padding: 12px 18px;
+            cursor: pointer;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .language-option:last-child {
+            border-bottom: none;
+        }
+
+        .language-option:hover {
+            background: #f8f9fa;
+        }
+
+        .language-option.selected {
+            background: #ECE31E;
+            font-weight: 600;
+        }
+
+        .flag {
+            font-size: 20px;
         }
 
         .chat-messages {
@@ -98,7 +173,7 @@
         }
 
         .message.user .message-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #E32219;
             color: white;
             border-bottom-right-radius: 4px;
         }
@@ -125,13 +200,13 @@
         }
 
         .chat-input:focus {
-            border-color: #667eea;
+            border-color: #ECE31E;
         }
 
         .send-button {
             padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #ECE31E;
+            color: #333;
             border: none;
             border-radius: 25px;
             font-size: 15px;
@@ -142,7 +217,8 @@
 
         .send-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(236, 227, 30, 0.4);
+            background: #f5ed3a;
         }
 
         .send-button:active {
@@ -172,7 +248,7 @@
         .typing-indicator span {
             height: 8px;
             width: 8px;
-            background: #667eea;
+            background: #E32219;
             border-radius: 50%;
             display: inline-block;
             margin-right: 4px;
@@ -218,25 +294,77 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #667eea;
+            background: #E32219;
             border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #764ba2;
+            background: #c41c14;
         }
     </style>
 </head>
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            <h1>QA Bot Demo</h1>
-            <p>Stel je vraag en krijg direct antwoord</p>
+            <div class="chat-header-top">
+                <div>
+                    <h1 id="headerTitle">QA Bot Demo</h1>
+                    <p id="headerSubtitle">Stel je vraag en krijg direct antwoord</p>
+                </div>
+                <div class="language-selector">
+                    <button class="language-button" id="languageButton">
+                        <span class="flag" id="currentFlag">🇳🇱</span>
+                        <span id="currentLanguage">NL</span>
+                    </button>
+                    <div class="language-dropdown" id="languageDropdown">
+                        <div class="language-option selected" data-lang="nl">
+                            <span class="flag">🇳🇱</span>
+                            <span>Nederlands</span>
+                        </div>
+                        <div class="language-option" data-lang="en">
+                            <span class="flag">🇬🇧</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="tr">
+                            <span class="flag">🇹🇷</span>
+                            <span>Türkçe</span>
+                        </div>
+                        <div class="language-option" data-lang="pl">
+                            <span class="flag">🇵🇱</span>
+                            <span>Polski</span>
+                        </div>
+                        <div class="language-option" data-lang="ar">
+                            <span class="flag">🇸🇦</span>
+                            <span>العربية</span>
+                        </div>
+                        <div class="language-option" data-lang="de">
+                            <span class="flag">🇩🇪</span>
+                            <span>Deutsch</span>
+                        </div>
+                        <div class="language-option" data-lang="es">
+                            <span class="flag">🇪🇸</span>
+                            <span>Español</span>
+                        </div>
+                        <div class="language-option" data-lang="fr">
+                            <span class="flag">🇫🇷</span>
+                            <span>Français</span>
+                        </div>
+                        <div class="language-option" data-lang="pap">
+                            <span class="flag">🇨🇼</span>
+                            <span>Papiamentu</span>
+                        </div>
+                        <div class="language-option" data-lang="ber">
+                            <span class="flag">🏴</span>
+                            <span>Tamazight</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="chat-messages" id="chatMessages">
             <div class="message bot">
-                <div class="message-content">
+                <div class="message-content" id="welcomeMessage">
                     Hallo! Ik ben je QA bot. Stel gerust je vraag!
                 </div>
             </div>
@@ -263,8 +391,180 @@
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
         const errorMessage = document.getElementById('errorMessage');
+        const languageButton = document.getElementById('languageButton');
+        const languageDropdown = document.getElementById('languageDropdown');
 
         let sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        let currentLang = 'nl';
+
+        // Translations
+        const translations = {
+            nl: {
+                title: 'QA Bot Demo',
+                subtitle: 'Stel je vraag en krijg direct antwoord',
+                placeholder: 'Typ je vraag hier...',
+                sendButton: 'Verstuur',
+                welcome: 'Hallo! Ik ben je QA bot. Stel gerust je vraag!',
+                error: 'Er is een fout opgetreden. Probeer het opnieuw.',
+                noResponse: 'Sorry, ik kon geen antwoord genereren.',
+                errorOccurred: 'Sorry, er ging iets mis. Probeer het opnieuw.',
+                langCode: 'NL',
+                flag: '🇳🇱'
+            },
+            en: {
+                title: 'QA Bot Demo',
+                subtitle: 'Ask your question and get an instant answer',
+                placeholder: 'Type your question here...',
+                sendButton: 'Send',
+                welcome: 'Hello! I am your QA bot. Feel free to ask your question!',
+                error: 'An error occurred. Please try again.',
+                noResponse: 'Sorry, I could not generate a response.',
+                errorOccurred: 'Sorry, something went wrong. Please try again.',
+                langCode: 'EN',
+                flag: '🇬🇧'
+            },
+            tr: {
+                title: 'QA Bot Demo',
+                subtitle: 'Sorunuzu sorun ve anında cevap alın',
+                placeholder: 'Sorunuzu buraya yazın...',
+                sendButton: 'Gönder',
+                welcome: 'Merhaba! Ben QA botunuzum. Sorunuzu sormaktan çekinmeyin!',
+                error: 'Bir hata oluştu. Lütfen tekrar deneyin.',
+                noResponse: 'Üzgünüm, yanıt oluşturamadım.',
+                errorOccurred: 'Üzgünüm, bir şeyler ters gitti. Lütfen tekrar deneyin.',
+                langCode: 'TR',
+                flag: '🇹🇷'
+            },
+            pl: {
+                title: 'QA Bot Demo',
+                subtitle: 'Zadaj pytanie i otrzymaj natychmiastową odpowiedź',
+                placeholder: 'Wpisz tutaj swoje pytanie...',
+                sendButton: 'Wyślij',
+                welcome: 'Cześć! Jestem twoim botem QA. Zadaj swoje pytanie!',
+                error: 'Wystąpił błąd. Spróbuj ponownie.',
+                noResponse: 'Przepraszam, nie mogłem wygenerować odpowiedzi.',
+                errorOccurred: 'Przepraszam, coś poszło nie tak. Spróbuj ponownie.',
+                langCode: 'PL',
+                flag: '🇵🇱'
+            },
+            ar: {
+                title: 'QA Bot Demo',
+                subtitle: 'اطرح سؤالك واحصل على إجابة فورية',
+                placeholder: 'اكتب سؤالك هنا...',
+                sendButton: 'إرسال',
+                welcome: 'مرحبا! أنا بوت الأسئلة والأجوبة. لا تتردد في طرح سؤالك!',
+                error: 'حدث خطأ. يرجى المحاولة مرة أخرى.',
+                noResponse: 'عذرا، لم أتمكن من إنشاء رد.',
+                errorOccurred: 'عذرا، حدث خطأ ما. يرجى المحاولة مرة أخرى.',
+                langCode: 'AR',
+                flag: '🇸🇦'
+            },
+            de: {
+                title: 'QA Bot Demo',
+                subtitle: 'Stellen Sie Ihre Frage und erhalten Sie sofort eine Antwort',
+                placeholder: 'Geben Sie hier Ihre Frage ein...',
+                sendButton: 'Senden',
+                welcome: 'Hallo! Ich bin Ihr QA-Bot. Stellen Sie gerne Ihre Frage!',
+                error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
+                noResponse: 'Entschuldigung, ich konnte keine Antwort generieren.',
+                errorOccurred: 'Entschuldigung, etwas ist schief gelaufen. Bitte versuchen Sie es erneut.',
+                langCode: 'DE',
+                flag: '🇩🇪'
+            },
+            es: {
+                title: 'QA Bot Demo',
+                subtitle: 'Haz tu pregunta y obtén una respuesta instantánea',
+                placeholder: 'Escribe tu pregunta aquí...',
+                sendButton: 'Enviar',
+                welcome: '¡Hola! Soy tu bot de preguntas y respuestas. ¡No dudes en hacer tu pregunta!',
+                error: 'Se produjo un error. Por favor, inténtalo de nuevo.',
+                noResponse: 'Lo siento, no pude generar una respuesta.',
+                errorOccurred: 'Lo siento, algo salió mal. Por favor, inténtalo de nuevo.',
+                langCode: 'ES',
+                flag: '🇪🇸'
+            },
+            fr: {
+                title: 'QA Bot Demo',
+                subtitle: 'Posez votre question et obtenez une réponse instantanée',
+                placeholder: 'Tapez votre question ici...',
+                sendButton: 'Envoyer',
+                welcome: 'Bonjour! Je suis votre bot QA. N\'hésitez pas à poser votre question!',
+                error: 'Une erreur s\'est produite. Veuillez réessayer.',
+                noResponse: 'Désolé, je n\'ai pas pu générer de réponse.',
+                errorOccurred: 'Désolé, quelque chose s\'est mal passé. Veuillez réessayer.',
+                langCode: 'FR',
+                flag: '🇫🇷'
+            },
+            pap: {
+                title: 'QA Bot Demo',
+                subtitle: 'Hasi bo pregunta i haña respuesta direkto',
+                placeholder: 'Tipa bo pregunta aki...',
+                sendButton: 'Manda',
+                welcome: 'Bon bini! Mi ta bo bot di pregunta i respuesta. Hasi bo pregunta!',
+                error: 'A sosodé un eror. Por fabor intenta atrobe.',
+                noResponse: 'Dispensa, mi no por a genera un respuesta.',
+                errorOccurred: 'Dispensa, algu a bai robes. Por fabor intenta atrobe.',
+                langCode: 'PAP',
+                flag: '🇨🇼'
+            },
+            ber: {
+                title: 'QA Bot Demo',
+                subtitle: 'Saqsa asteqsi-nnek tessawed-d tiririt s tiririt',
+                placeholder: 'Aru asteqsi-nnek dagi...',
+                sendButton: 'Azen',
+                welcome: 'Azul! Nekk d abot-nnek n yisteqsiyen. Saqsa asteqsi-nnek!',
+                error: 'Yella ugur. Ɛreḍ tikelt-nniḍen.',
+                noResponse: 'Suref-iyi, ur zmireɣ ara ad d-snulfuɣ tiririt.',
+                errorOccurred: 'Suref-iyi, yella wayen ur neddi ara akken ilaq. Ɛreḍ tikelt-nniḍen.',
+                langCode: 'BER',
+                flag: '🏴'
+            }
+        };
+
+        // Toggle language dropdown
+        languageButton.addEventListener('click', () => {
+            languageDropdown.classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!languageButton.contains(e.target) && !languageDropdown.contains(e.target)) {
+                languageDropdown.classList.remove('active');
+            }
+        });
+
+        // Language selection
+        document.querySelectorAll('.language-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const lang = option.dataset.lang;
+                changeLanguage(lang);
+
+                // Update selected state
+                document.querySelectorAll('.language-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+
+                languageDropdown.classList.remove('active');
+            });
+        });
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            // Update UI elements
+            document.getElementById('headerTitle').textContent = t.title;
+            document.getElementById('headerSubtitle').textContent = t.subtitle;
+            document.getElementById('messageInput').placeholder = t.placeholder;
+            document.getElementById('sendButton').textContent = t.sendButton;
+            document.getElementById('welcomeMessage').textContent = t.welcome;
+            document.getElementById('currentLanguage').textContent = t.langCode;
+            document.getElementById('currentFlag').textContent = t.flag;
+
+            // Update HTML lang attribute
+            document.documentElement.lang = lang;
+        }
 
         function addMessage(content, isUser = false) {
             const messageDiv = document.createElement('div');
@@ -331,6 +631,8 @@
             // Show typing indicator
             showTypingIndicator();
 
+            const t = translations[currentLang];
+
             try {
                 const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
@@ -353,7 +655,7 @@
                 const data = await response.json();
 
                 // Extract bot response
-                let botMessage = 'Sorry, ik kon geen antwoord genereren.';
+                let botMessage = t.noResponse;
 
                 if (data.output) {
                     botMessage = data.output;
@@ -370,8 +672,8 @@
             } catch (error) {
                 hideTypingIndicator();
                 console.error('Error:', error);
-                showError('Er is een fout opgetreden. Probeer het opnieuw.');
-                addMessage('Sorry, er ging iets mis. Probeer het opnieuw.', false);
+                showError(t.error);
+                addMessage(t.errorOccurred, false);
             } finally {
                 messageInput.disabled = false;
                 sendButton.disabled = false;
